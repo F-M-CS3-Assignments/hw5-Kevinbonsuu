@@ -182,6 +182,62 @@ void TestDestructor(){
 	cout << "NO ERRORS.  Use valgrind to check!" << endl << endl;
 }
 
+void TestDuplicateEdgeThrows() {
+    cout << "Testing Duplicate Edge Exception..." << endl;
+    Graph g;
+    g.AddNode(1);
+    g.AddNode(2);
+    g.AddEdge(1, 2, 5);
+    
+    try {
+        g.AddEdge(1, 2, 10); // should throw
+        assert(false);
+    } catch (const invalid_argument& e) {
+        // Expected
+    }
+    cout << "PASSED!\n";
+}
+
+void TestAddEdgeInvalidNode() {
+    cout << "Testing Edge with Invalid Node..." << endl;
+    Graph g;
+    g.AddNode(1);
+    
+    try {
+        g.AddEdge(1, 99, 5); // invalid "to" node
+        assert(false);
+    } catch (const invalid_argument& e) {}
+
+    try {
+        g.AddEdge(88, 1, 5); // invalid "from" node
+        assert(false);
+    } catch (const invalid_argument& e) {}
+    cout << "PASSED!\n";
+}
+
+void TestGetOutwardEdgesEmptyGraph() {
+    cout << "Testing GetOutwardEdgesFrom on Empty Graph..." << endl;
+    Graph g;
+    try {
+        g.GetOutwardEdgesFrom(1);
+        assert(false);
+    } catch (const invalid_argument& e) {
+        // Expected
+    }
+    cout << "PASSED!\n";
+}
+
+void TestOrderAndSizeWithNoEdges() {
+    cout << "Testing Order and Size Without Edges..." << endl;
+    Graph g;
+    g.AddNode(10);
+    g.AddNode(20);
+    g.AddNode(30);
+    
+    assert(g.Order() == 3);
+    assert(g.Size() == 0);
+    cout << "PASSED!\n";
+}
 
 
 int main(){
@@ -192,6 +248,10 @@ int main(){
 	TestGetOutwardEdgesFrom();
 	TestGetNodes();
 	TestDestructor();
+	TestDuplicateEdgeThrows();
+    TestAddEdgeInvalidNode();
+    TestGetOutwardEdgesEmptyGraph();
+    TestOrderAndSizeWithNoEdges();
 
 	
 	cout << "ALL TESTS PASSED!" << endl;

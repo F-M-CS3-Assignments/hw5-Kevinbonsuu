@@ -112,10 +112,77 @@ void UpdateTest() {
 	cout << "PASSED!" << endl;
 }
 
+void TestContainsEmptyQueue() {
+    cout << "Testing Contains on Empty Queue..." << endl;
+    BetterPriorityQueue q;
+    BPQNode node;
+    node.gnode = 1;
+    assert(q.Contains(node) == false);
+    cout << "PASSED!\n";
+}
+
+void TestUpdateNoChange() {
+    cout << "Testing Update with Same or Higher Priority..." << endl;
+    BetterPriorityQueue q;
+    BPQNode n;
+    n.gnode = 1;
+    n.pri = 5;
+    q.push(n);
+
+    BPQNode same;
+    same.gnode = 1;
+    same.pri = 5; // same priority
+    assert(q.Update(same) == false);
+
+    BPQNode worse;
+    worse.gnode = 1;
+    worse.pri = 10; // higher priority (worse)
+    assert(q.Update(worse) == false);
+    cout << "PASSED!\n";
+}
+
+void TestUpdateMissingNode() {
+    cout << "Testing Update on Missing Node..." << endl;
+    BetterPriorityQueue q;
+    BPQNode n;
+    n.gnode = 1;
+    n.pri = 5;
+    // Not inserted
+    assert(q.Update(n) == false);
+    cout << "PASSED!\n";
+}
+
+void TestToStringOrder() {
+    cout << "Testing ToString Heap Order..." << endl;
+    BetterPriorityQueue q;
+
+    for (int i = 3; i >= 1; --i) {
+        BPQNode n;
+        n.gnode = i;
+        n.pri = i;
+        q.push(n);
+    }
+
+    // Lower priority inserted later
+    BPQNode update;
+    update.gnode = 3;
+    update.pri = 0;
+    q.Update(update);
+
+    string out = q.ToString();
+    cout << "Queue: " << out << endl;
+    assert(out.find("(3, pri: 0)") != string::npos);
+    cout << "PASSED!\n";
+}
+
 int main(){
 	
 	ContainsTest();
 	UpdateTest();
+	TestContainsEmptyQueue();
+    TestUpdateNoChange();
+    TestUpdateMissingNode();
+    TestToStringOrder();
 	
 	cout << "ALL TESTS PASSED!!" << endl;
 	

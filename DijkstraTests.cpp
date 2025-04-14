@@ -71,6 +71,27 @@ void MoreDijkstraTests(){
 	cout << "Deep Testing Dijkstra Algorithm..." << endl;
 
 	// Your code goes here!
+	// Test when start and end are the same
+    Graph g1;
+    g1.AddNode(1);
+    assert(dijkstra(1, 1, &g1) == 0);
+
+    // Test unreachable destination
+    Graph g2;
+    g2.AddNode(1);
+    g2.AddNode(2);
+    assert(dijkstra(1, 2, &g2) == -1);
+
+    // Test larger graph
+    Graph g3;
+    for (int i = 1; i <= 6; ++i) g3.AddNode(i);
+    g3.AddEdge(1, 2, 2);
+    g3.AddEdge(2, 3, 4);
+    g3.AddEdge(1, 4, 1);
+    g3.AddEdge(4, 5, 2);
+    g3.AddEdge(5, 3, 1);
+    g3.AddEdge(3, 6, 3);
+    assert(dijkstra(1, 6, &g3) == 7); // correct shortest path 
 
 	cout << "DONE Deep Testing Dijkstra Algorithm" << endl;
 }
@@ -86,3 +107,4 @@ int main(){
 
 	return 0;
 }
+
